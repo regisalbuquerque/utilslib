@@ -13,22 +13,35 @@ import java.util.logging.Logger;
 public class CSVUtil {
     
     BufferedWriter buffWriter;
+    boolean append = false;
     
-    public CSVUtil(String path_fileName) {
-        try {
-            buffWriter = new BufferedWriter(new FileWriter(path_fileName));
-        } catch (IOException ex) {
-            Logger.getLogger(CSVUtil.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    public CSVUtil(String path_fileName) 
+    {
+    	criarBufferWriter(path_fileName);
+    }
+    
+    public CSVUtil(String path_fileName, boolean append) 
+    {
+    	this.append = append;
+    	criarBufferWriter(path_fileName);
     }
 
-    public CSVUtil(String path, String fileName) {
-        try {
-            buffWriter = new BufferedWriter(new FileWriter(path + fileName));
-        } catch (IOException ex) {
-            Logger.getLogger(CSVUtil.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    public CSVUtil(String path, String fileName) 
+    {
+        String path_fileName = path + fileName;
+        criarBufferWriter(path_fileName);
     }
+    
+    private void criarBufferWriter(String path_fileName)
+    {
+	    try {
+	    	DiretorioUtil.createPathFile(path_fileName);
+	        buffWriter = new BufferedWriter(new FileWriter(path_fileName, this.append));
+	    } catch (IOException ex) {
+	        Logger.getLogger(CSVUtil.class.getName()).log(Level.SEVERE, null, ex);
+	    }
+    }
+
     
     public void cabecalho(String cabecalho) 
     {
